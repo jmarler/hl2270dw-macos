@@ -1,2 +1,6 @@
 *~
 build/
+build-release/
+dist/
+__pycache__/
+.DS_Store

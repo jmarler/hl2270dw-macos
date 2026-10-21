@@ -1,0 +1,180 @@
+// This file is part of hl2270dw-macos, a native macOS driver for the
+// Brother HL-2270DW based on the brlaser printer driver.
+//
+// Copyright 2026 Jon Marler
+//
+// hl2270dw-macos is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 2 of the License, or
+// (at your option) any later version.
+//
+// hl2270dw-macos is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with hl2270dw-macos.  If not, see <http://www.gnu.org/licenses/>.
+
+// Printer description for the Brother HL-2270DW. Compile with ppdc.
+// Option keywords and values match Brother's own driver, so settings saved
+// with lpoptions keep working when switching drivers.
+
+#include <font.defs>
+
+// Paper sizes the printer supports, in points.
+#media "Letter/Letter" 612 792
+#media "A4/A4" 595 842
+#media "Legal/Legal" 612 1008
+#media "Executive/Executive" 522 756
+#media "A5/A5" 420 595
+#media "A5Rotated/A5 Long Edge" 595 420
+#media "A6/A6" 297 420
+#media "ISOB5/B5" 499 709
+#media "ISOB6/B6" 354 499
+#media "Env10/Com-10" 297 684
+#media "EnvDL/DL" 312 624
+#media "EnvC5/C5" 459 649
+#media "EnvMonarch/Monarch" 279 540
+#media "3x5/3 x 5" 216 360
+#media "FanFoldGermanLegal/Folio" 612 936
+#media "EnvPRC5Rotated/DL Long Edge" 624 312
+#media "B5/JIS B5" 516 729
+#media "Postcard/Hagaki" 284 419
+#media "EnvYou4/Envelope #4" 298 666
+#media "EnvChou3/Envelope MAX" 340 666
+
+Font *
+
+Manufacturer "Brother"
+ModelName "HL-2270DW series"
+Version "@HL2270DW_VERSION@"
+PCFileName "hl2270dw.ppd"
+
+Attribute "NickName" "" "Brother HL-2270DW series, hl2270dw-macos @HL2270DW_VERSION@"
+Attribute "Product" "" "(HL-2270DW series)"
+Attribute "1284DeviceID" "" "MFG:Brother;CMD:PJL,PCL,PCLXL;MDL:HL-2270DW series;CLS:PRINTER;"
+
+Filter application/vnd.cups-raster 0 "@HL2270DW_FILTER_DIR@/rastertohl2270dw"
+Filter application/vnd.cups-command 0 "@HL2270DW_FILTER_DIR@/commandtohl2270dw"
+
+// The filters report supply levels themselves (CUPS's generic SNMP code
+// cannot read this printer's toner level). macOS sends ReportLevels from
+// the Supply Levels button and PrintSelfTestPage from Printer Utility.
+Attribute "cupsSNMPSupplies" "" "False"
+Attribute "cupsCommands" "" "ReportLevels PrintSelfTestPage"
+
+ColorDevice no
+// macOS makes the copies itself, so collated copies always come out right.
+ManualCopies yes
+Throughput 27
+
+// Unprintable margins: left, bottom, right, top (points).
+HWMargins 18 12 18 12
+
+*MediaSize Letter
+MediaSize A4
+MediaSize Legal
+MediaSize Executive
+MediaSize A5
+MediaSize A5Rotated
+MediaSize A6
+MediaSize ISOB5
+MediaSize ISOB6
+MediaSize Env10
+MediaSize EnvDL
+MediaSize EnvC5
+MediaSize EnvMonarch
+MediaSize 3x5
+MediaSize FanFoldGermanLegal
+MediaSize EnvPRC5Rotated
+MediaSize B5
+MediaSize Postcard
+MediaSize EnvYou4
+MediaSize EnvChou3
+
+VariablePaperSize yes
+MinSize 216 329
+MaxSize 612 1152
+
+// Automatic two-sided printing works with Letter, A4, Legal and Folio.
+Duplex normal
+UIConstraints "*Duplex *PageSize Executive"
+UIConstraints "*Duplex *PageSize A5"
+UIConstraints "*Duplex *PageSize A5Rotated"
+UIConstraints "*Duplex *PageSize A6"
+UIConstraints "*Duplex *PageSize ISOB5"
+UIConstraints "*Duplex *PageSize ISOB6"
+UIConstraints "*Duplex *PageSize Env10"
+UIConstraints "*Duplex *PageSize EnvDL"
+UIConstraints "*Duplex *PageSize EnvC5"
+UIConstraints "*Duplex *PageSize EnvMonarch"
+UIConstraints "*Duplex *PageSize 3x5"
+UIConstraints "*Duplex *PageSize EnvPRC5Rotated"
+UIConstraints "*Duplex *PageSize B5"
+UIConstraints "*Duplex *PageSize Postcard"
+UIConstraints "*Duplex *PageSize EnvYou4"
+UIConstraints "*Duplex *PageSize EnvChou3"
+UIConstraints "*Duplex *PageSize Custom"
+
+// macOS renders 1-bit black and white raster. HQ 1200 is sent as
+// 1200 x 1200 dpi raster at full paper feed speed, like Brother's driver.
+Option "Resolution/Resolution" PickOne AnySetup 10
+  Choice "300dpi/300 dpi" "<</HWResolution[300 300]/cupsColorSpace 3/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+  *Choice "600dpi/600 dpi" "<</HWResolution[600 600]/cupsColorSpace 3/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+  Choice "1200dpi/HQ 1200" "<</HWResolution[1200 1200]/cupsColorSpace 3/cupsBitsPerColor 1/cupsRowCount 0/cupsRowFeed 0/cupsRowStep 0>>setpagedevice"
+
+Option "MediaType/Media Type" PickOne AnySetup 10
+  *Choice "Plain/Plain Paper" "<</MediaType(Plain)/cupsMediaType 1>>setpagedevice"
+  Choice "Thin/Thin Paper" "<</MediaType(Thin)/cupsMediaType 2>>setpagedevice"
+  Choice "Thick/Thick Paper" "<</MediaType(Thick)/cupsMediaType 3>>setpagedevice"
+  Choice "ThickPaper2/Thicker Paper" "<</MediaType(ThickPaper2)/cupsMediaType 4>>setpagedevice"
+  Choice "BOND/Bond Paper" "<</MediaType(BOND)/cupsMediaType 5>>setpagedevice"
+  Choice "Env/Envelopes" "<</MediaType(Env)/cupsMediaType 7>>setpagedevice"
+  Choice "EnvThick/Env. Thick" "<</MediaType(EnvThick)/cupsMediaType 8>>setpagedevice"
+  Choice "EnvThin/Env. Thin" "<</MediaType(EnvThin)/cupsMediaType 9>>setpagedevice"
+  Choice "Recycled/Recycled Paper" "<</MediaType(Recycled)/cupsMediaType 10>>setpagedevice"
+  Choice "Label/Label" "<</MediaType(Label)/cupsMediaType 11>>setpagedevice"
+  Choice "PostCard/Postcard" "<</MediaType(PostCard)/cupsMediaType 12>>setpagedevice"
+
+// Paper source. Using the standard InputSlot keyword gives macOS's Paper
+// Feed pane, including "First page from".
+Option "InputSlot/Paper Source" PickOne AnySetup 10
+  *Choice "AutoSelect/Auto Select" "<</ManualFeed false/MediaPosition 7>>setpagedevice"
+  Choice "Tray1/Tray 1" "<</ManualFeed false/MediaPosition 1>>setpagedevice"
+  Choice "Manual/Manual Feed Slot" "<</ManualFeed true/MediaPosition 2>>setpagedevice"
+
+Option "TonerSaveMode/Toner Save Mode" PickOne AnySetup 10
+  *Choice "OFF/Off" ""
+  Choice "ON/On" ""
+
+Option "BRImproveOutput/Improvement Settings" PickOne AnySetup 10
+  *Choice "OFF/Off" ""
+  Choice "BRLessPaperCurl/Reduce Paper Curl" ""
+  Choice "BRFixIntensity/Improve Toner Fixing" ""
+
+Option "BRReduceGhost/Reduce Ghosting" PickOne AnySetup 10
+  *Choice "OFF/Off" ""
+  Choice "ON/On" ""
+
+Option "BRSkipBlank/Skip Blank Page" PickOne AnySetup 10
+  *Choice "OFF/Off" ""
+  Choice "ON/On" ""
+
+// Choosing a time also changes the printer's stored sleep setting.
+Option "BRSleepTime/Sleep Time" PickOne AnySetup 10
+  *Choice "Default/Printer Default" ""
+  Choice "1/1 Minute" ""
+  Choice "2/2 Minutes" ""
+  Choice "3/3 Minutes" ""
+  Choice "5/5 Minutes" ""
+  Choice "10/10 Minutes" ""
+  Choice "15/15 Minutes" ""
+  Choice "20/20 Minutes" ""
+  Choice "30/30 Minutes" ""
+  Choice "45/45 Minutes" ""
+  Choice "60/60 Minutes" ""
+  Choice "90/90 Minutes" ""
+  Choice "120/120 Minutes" ""
+  Choice "180/180 Minutes" ""
+  Choice "210/210 Minutes" ""

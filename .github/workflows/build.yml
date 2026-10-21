@@ -6,34 +6,28 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        compiler: [ clang++, gcc++ ]
+        compiler: [ clang++, g++ ]
     steps:
-      - name: Add repository
-        run: sudo apt-add-repository -y "ppa:ubuntu-toolchain-r/test"
       - name: Install packages
-        run: sudo apt install libcups2-dev
-      - uses: actions/checkout@v3
+        run: sudo apt-get update && sudo apt-get install -y libcups2-dev
+      - uses: actions/checkout@v4
       - name: Configure
-        run: cmake .
-      - name: Make
-        run: make
+        run: cmake -S . -B build
         env:
           CXX: ${{ matrix.compiler }}
+      - name: Build
+        run: cmake --build build
       - name: Run tests
-        run: make check
+        run: cd build && ctest --output-on-failure
   macos:
     runs-on: macos-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        compiler: [ clang++, gcc++ ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Configure
-        run: cmake .
-      - name: Make
-        run: make
-        env:
-          CXX: ${{ matrix.compiler }}
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build
       - name: Run tests
-        run: make check
+        run: cd build && ctest --output-on-failure
+      - name: Build unsigned package
+        run: APP_IDENTITY=- INSTALLER_IDENTITY=- macos/build-pkg.sh

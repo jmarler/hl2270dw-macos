@@ -1,3 +1,17 @@
+hl2270dw-macos v1.0.0
+    Native macOS driver for the Brother HL-2270DW, based on brlaser v6.2.8:
+        New filter rastertohl2270dw with the Brother driver's PJL job
+        settings: toner save, reduce paper curl, improve toner fixing,
+        reduce ghosting, sleep time, skip blank page, media types, paper
+        source (including "First page from"), long- and short-edge duplex.
+        Correct page placement for all 20 paper sizes and custom sizes.
+        New filter commandtohl2270dw: supply levels (toner and drum over
+        SNMP) and the printer self-test page.
+        Printer status (paper out, jams, open cover, toner) over SNMP.
+        PPD with Brother's option names, built with ppdc.
+        Universal binaries (Apple silicon and Intel), installer package.
+        Tests comparing the output with Brother's driver.
+
 brlaser v6.2.8
     New printer entries:
         Brother HL-1210W series
