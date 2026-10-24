@@ -33,6 +33,8 @@ enum class improve_output {
 // settings keep working.
 struct job_options {
   bool toner_save = false;              // TonerSaveMode
+  bool density_set = false;             // BRDensityAdjustment, false = printer default
+  int density = 0;                      // -6 (lighter) to 6 (darker)
   improve_output improve = improve_output::off;  // BRImproveOutput
   bool reduce_ghost = false;            // BRReduceGhost
   int sleep_minutes = -1;               // BRSleepTime, -1 = printer default

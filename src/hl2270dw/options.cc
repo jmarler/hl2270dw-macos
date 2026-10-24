@@ -102,6 +102,22 @@ int parse_sleep(const std::string &value) {
   return (int)minutes;
 }
 
+// BRDensityAdjustment accepts "Default", a number from -6 to 6, or
+// "Custom.N". Returns false for the printer default.
+bool parse_density(const std::string &value, int *density) {
+  const char *v = value.c_str();
+  if (!strncasecmp(v, "Custom.", 7))
+    v += 7;
+  if (!*v || !strcasecmp(v, "Default"))
+    return false;
+  char *end;
+  long level = strtol(v, &end, 10);
+  if (*end != '\0' || level < -6 || level > 6)
+    level = 0;  // Same fallback as Brother's driver for invalid values.
+  *density = (int)level;
+  return true;
+}
+
 }  // namespace
 
 job_options parse_job_options(const char *user,
@@ -112,6 +128,8 @@ job_options parse_job_options(const char *user,
   job_options o;
 
   o.toner_save = is_on(src.ppd_option("TonerSaveMode", "OFF"));
+  o.density_set = parse_density(
+      src.ppd_option("BRDensityAdjustment", "Default"), &o.density);
 
   std::string improve = src.ppd_option("BRImproveOutput", "OFF");
   if (improve == "BRLessPaperCurl")

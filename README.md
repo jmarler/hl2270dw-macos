@@ -30,6 +30,7 @@ needs to behave like it does with Brother's own driver.
 | Media type | Plain, thin, thick, thicker, bond, envelopes (normal, thick, thin), recycled, label, postcard |
 | Paper source | Auto select, tray 1, manual feed slot; macOS "First page from" is supported |
 | Toner Save Mode | Off, on |
+| Density Adjustment | Printer default, or -6 (lighter) to +6 (darker) |
 | Improvement Settings | Off, reduce paper curl, improve toner fixing |
 | Reduce Ghosting | Off, on |
 | Skip Blank Page | Off, on |
@@ -54,13 +55,12 @@ profile. For this printer, this driver adds:
 | JIS B5 | Printed as ISO B5, so the bottom of the page is cut off ([fix submitted](https://github.com/Owl-Maintain/brlaser/pull/91)) | Correct |
 | Paper source | Lists Tray 2, Tray 3 and MP Tray, which this printer doesn't have | Auto select, tray 1, manual feed slot |
 | Media types | No recycled, label or postcard | Brother's list |
-| Brother options | Toner save only | Toner save, improvement settings, reduce ghosting, skip blank page, sleep time |
+| Brother options | Toner save, toner density | Toner save, density adjustment, improvement settings, reduce ghosting, skip blank page, sleep time |
 | Supply levels and printer status | Not available | Toner, drum, paper out, jams, open cover |
 | Self-test page | No | Yes |
 | Macs | Depends on the package | Apple silicon and Intel, macOS 11 or later |
 
-brlaser has a **Toner Density** setting, which this driver doesn't. For
-any other Brother printer, use brlaser.
+For any other Brother printer, use brlaser.
 
 ## Installing
 
@@ -181,6 +181,9 @@ test page.
 * Quotes in job titles are replaced instead of being copied into the
   printer commands, which broke them.
 * Postcard paper always uses the thick paper path.
+* **Density Adjustment** is not in Brother's HL-2270DW driver, but the
+  printer honors it. It works like the setting in Brother's drivers for
+  other models.
 * When a later page changes paper size, resolution, or duplex, the printer
   receives updated settings for that page.
 
