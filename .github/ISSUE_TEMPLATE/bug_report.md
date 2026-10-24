@@ -12,8 +12,9 @@ This driver supports only the Brother HL-2270DW. For other Brother
 printers, see brlaser: https://github.com/Owl-Maintain/brlaser
 
 Driver not showing up when you add the printer? In the Add Printer window,
-open the "Use" menu and choose "Brother HL-2270DW series, hl2270dw-macos".
-macOS often picks Brother's driver instead. See
+click the printer in the list first (the "Use" menu is dimmed until you
+do), then open the "Use" menu and choose "Brother HL-2270DW series,
+hl2270dw-macos". macOS often picks Brother's driver instead. See
 https://github.com/jmarler/hl2270dw-macos#installing
 -->
 
