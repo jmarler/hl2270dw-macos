@@ -1,0 +1,4 @@
+contact_links:
+  - name: Other Brother printers
+    url: https://github.com/Owl-Maintain/brlaser
+    about: This driver supports only the HL-2270DW. brlaser supports many other Brother monochrome lasers.

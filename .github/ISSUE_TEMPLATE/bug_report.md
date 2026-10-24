@@ -1,47 +1,51 @@
 ---
 name: Bug report
-about: Create a report to help us improve
-title: "[BUG]"
+about: Report a problem with the HL-2270DW driver
+title: "[BUG] "
 labels: ''
 assignees: ''
 
 ---
 
 <!--
-PLEASE FILL THIS TEMPLATE TO MAKE YOUR REPORT MORE HELPFUL FOR THE DEVELOPER!!
+This driver supports only the Brother HL-2270DW. For other Brother
+printers, see brlaser: https://github.com/Owl-Maintain/brlaser
 
-NOTE:
- - Color Printers are not supported
- - Ink-jet Printers are not supported
- - Label Printers are not supported
+Driver not showing up when you add the printer? In the Add Printer window,
+open the "Use" menu and choose "Brother HL-2270DW series, hl2270dw-macos".
+macOS often picks Brother's driver instead. See
+https://github.com/jmarler/hl2270dw-macos#installing
 -->
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+What happened, and what you expected to happen.
 
-**Steps to Reproduce**
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
-
-**Current behavior**
-A clear and concise description of what is currently happening.
-
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**Steps to reproduce**
+1.
+2.
+3.
 
 **Screenshots**
-If applicable, add screenshots to help explain your problem.
+If applicable, add screenshots to help explain the problem.
 
-**Terminal Output**
-````
-IF APPLICABLE, PASTE CODE OUTPUT HERE
-````
+**System**
+- macOS version: <!-- Apple menu > About This Mac -->
+- Mac: <!-- for example, MacBook Air (M1) -->
+- Connection: <!-- network or USB -->
+- Driver version: <!-- Printers & Scanners > click the printer > Driver version -->
 
-**Desktop:**
- - Operating System:
- - brlaser Version:
+**Terminal output**
+Please run these commands in Terminal and paste the output:
+
+```sh
+pkgutil --pkg-info io.github.jmarler.hl2270dw-macos
+lpinfo -m | grep -i 2270
+grep -H '^\*NickName' /etc/cups/ppd/*.ppd
+```
+
+````
+PASTE OUTPUT HERE
+````
 
 **Additional context**
-Add any other context about the problem here.
+Anything else that might help.
