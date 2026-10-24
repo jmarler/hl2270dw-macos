@@ -8,7 +8,7 @@ endif()
 
 project(Owl-Maintain/brlaser CXX)
 set(BRLASER_VERSION "6.2.8")
-set(HL2270DW_VERSION "1.0.0")
+set(HL2270DW_VERSION "1.1.0")
 
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(STATUS "No build type selected, default to RelWithDebInfo")

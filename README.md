@@ -15,8 +15,9 @@ needs to behave like it does with Brother's own driver.
 > monochrome lasers, see [brlaser](https://github.com/Owl-Maintain/brlaser),
 > which supports many more models.
 
-> **Status:** 1.0.0. Tested on an HL-2270DW over the network, including
-> two-sided printing, manual feed, HQ 1200, toner save and supply levels.
+> **Status:** 1.1.0. Tested on an HL-2270DW over the network, including
+> two-sided printing, manual feed, HQ 1200, toner save, density adjustment
+> and supply levels.
 > Output has also been compared with Brother's driver page by page (see
 > [Testing](#testing)).
 
@@ -30,6 +31,7 @@ needs to behave like it does with Brother's own driver.
 | Media type | Plain, thin, thick, thicker, bond, envelopes (normal, thick, thin), recycled, label, postcard |
 | Paper source | Auto select, tray 1, manual feed slot; macOS "First page from" is supported |
 | Toner Save Mode | Off, on |
+| Density Adjustment | Printer default, or -6 (lighter) to +6 (darker) |
 | Improvement Settings | Off, reduce paper curl, improve toner fixing |
 | Reduce Ghosting | Off, on |
 | Skip Blank Page | Off, on |
@@ -40,6 +42,26 @@ needs to behave like it does with Brother's own driver.
 
 The option names and values are the same as in Brother's driver, so
 settings saved with `lpoptions` carry over.
+
+### Compared with brlaser
+
+brlaser supports the HL-2270DW too, with a profile shared by many Brother
+models. Packages that build brlaser for Apple silicon use that same
+profile. For this printer, this driver adds:
+
+| | brlaser 6.2.8 | This driver |
+| --- | --- | --- |
+| Page placement | About 1.4 mm higher and 0.5 mm further right than Brother's driver | Same as Brother's driver |
+| Paper sizes | 11, no custom sizes | 20, plus custom sizes |
+| JIS B5 | Printed as ISO B5, so the bottom of the page is cut off ([fix submitted](https://github.com/Owl-Maintain/brlaser/pull/91)) | Correct |
+| Paper source | Lists Tray 2, Tray 3 and MP Tray, which this printer doesn't have | Auto select, tray 1, manual feed slot |
+| Media types | No recycled, label or postcard | Brother's list |
+| Brother options | Toner save, toner density | Toner save, density adjustment, improvement settings, reduce ghosting, skip blank page, sleep time |
+| Supply levels and printer status | Not available | Toner, drum, paper out, jams, open cover |
+| Self-test page | No | Yes |
+| Macs | Depends on the package | Apple silicon and Intel, macOS 11 or later |
+
+For any other Brother printer, use brlaser.
 
 ## Installing
 
@@ -89,6 +111,20 @@ macos/add-queue.sh            # uses the address of your current HL-2270DW queue
 
 Supply levels and printer status need a network connection (they are read
 over SNMP). Printing over USB works, but levels are not shown.
+
+### Upgrading
+
+Install the new package. Printers you already added keep the old
+version's options until you update them: remove the printer and add it
+again, or update it in place, keeping its name and settings:
+
+```sh
+sudo lpadmin -p QUEUE_NAME -m "Library/Printers/PPDs/Contents/Resources/Brother HL-2270DW series hl2270dw-macos.gz"
+```
+
+`lpstat -p` lists queue names. lpadmin also prints a warning that
+printer drivers are deprecated in CUPS. It appears for every driver
+that is not AirPrint and does not stop the update.
 
 ### Uninstalling
 
@@ -160,6 +196,9 @@ test page.
 * Quotes in job titles are replaced instead of being copied into the
   printer commands, which broke them.
 * Postcard paper always uses the thick paper path.
+* **Density Adjustment** is not in Brother's HL-2270DW driver, but the
+  printer honors it. It works like the setting in Brother's drivers for
+  other models.
 * When a later page changes paper size, resolution, or duplex, the printer
   receives updated settings for that page.
 

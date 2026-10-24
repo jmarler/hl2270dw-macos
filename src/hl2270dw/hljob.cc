@@ -126,6 +126,10 @@ void hl_job::write_settings(const settings &s) {
   fprintf(out_, "@PJL SET TRANSFERLEVELUP=%s\n",
           options_.reduce_ghost ? "ON" : "OFF");
   fprintf(out_, "@PJL SET MEDIATYPE=%s\n", media_type_name(s.media_type));
+  if (options_.density_set) {
+    fprintf(out_, "@PJL SET DENSITY = %d\n", options_.density);
+    fprintf(out_, "@PJL SET DEVBIASADJUST = %d\n", options_.density);
+  }
   if (options_.sleep_minutes >= 0) {
     // DEFAULT changes the printer's stored setting, SET this job's.
     fprintf(out_, "@PJL DEFAULT AUTOSLEEP = ON\n");

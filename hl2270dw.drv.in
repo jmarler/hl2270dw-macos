@@ -148,6 +148,24 @@ Option "TonerSaveMode/Toner Save Mode" PickOne AnySetup 10
   *Choice "OFF/Off" ""
   Choice "ON/On" ""
 
+// Not in Brother's HL-2270DW driver, but the printer honors it. Same
+// option, range and PJL commands as Brother's drivers for other models.
+Option "BRDensityAdjustment/Density Adjustment" PickOne AnySetup 10
+  *Choice "Default/Printer Default" ""
+  Choice "-6/-6 (Lighter)" ""
+  Choice "-5/-5" ""
+  Choice "-4/-4" ""
+  Choice "-3/-3" ""
+  Choice "-2/-2" ""
+  Choice "-1/-1" ""
+  Choice "0/0" ""
+  Choice "1/+1" ""
+  Choice "2/+2" ""
+  Choice "3/+3" ""
+  Choice "4/+4" ""
+  Choice "5/+5" ""
+  Choice "6/+6 (Darker)" ""
+
 Option "BRImproveOutput/Improvement Settings" PickOne AnySetup 10
   *Choice "OFF/Off" ""
   Choice "BRLessPaperCurl/Reduce Paper Curl" ""

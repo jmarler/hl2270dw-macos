@@ -98,9 +98,11 @@ const lest::test specification[] = {
         "user", "title",
         "TonerSaveMode=ON BRImproveOutput=BRFixIntensity BRReduceGhost=ON "
         "BRSleepTime=Custom.15 BRSkipBlank=ON InputSlot=Tray1 "
-        "AP_FIRSTPAGE_InputSlot=Manual",
+        "AP_FIRSTPAGE_InputSlot=Manual BRDensityAdjustment=-3",
         nullptr);
     EXPECT(o.toner_save);
+    EXPECT(o.density_set);
+    EXPECT(o.density == -3);
     EXPECT(o.improve == improve_output::fix_intensity);
     EXPECT(o.reduce_ghost);
     EXPECT(o.sleep_minutes == 15);
@@ -113,6 +115,7 @@ const lest::test specification[] = {
   [] {
     job_options o = parse_job_options("user", "title", "", nullptr);
     EXPECT(!o.toner_save);
+    EXPECT(!o.density_set);
     EXPECT(o.improve == improve_output::off);
     EXPECT(!o.reduce_ghost);
     EXPECT(o.sleep_minutes == -1);
@@ -135,6 +138,37 @@ const lest::test specification[] = {
            .sleep_minutes == 5);
     EXPECT(parse_job_options("u", "t", "BRSleepTime=Default", nullptr)
            .sleep_minutes == -1);
+  },
+
+  "Density accepts Custom.N, and values outside -6 to 6 fall back to 0",
+  [] {
+    job_options o = parse_job_options("u", "t", "BRDensityAdjustment=Custom.6",
+                                      nullptr);
+    EXPECT(o.density_set);
+    EXPECT(o.density == 6);
+    o = parse_job_options("u", "t", "BRDensityAdjustment=7", nullptr);
+    EXPECT(o.density_set);
+    EXPECT(o.density == 0);
+    o = parse_job_options("u", "t", "BRDensityAdjustment=Default", nullptr);
+    EXPECT(!o.density_set);
+  },
+
+  "Density is sent after the media type, like Brother's drivers",
+  [] {
+    job_options o;
+    o.density_set = true;
+    o.density = -6;
+    tempfile f;
+    {
+      hl_job job(f.file(), o, test_time);
+      job.add_page(small_page(2), std::vector<uint8_t>(8, 0x0F));
+    }
+    std::string out = as_string(f.data());
+    // Brother's rastertobrother1110 writes these lines in this place.
+    EXPECT(out.find("@PJL SET MEDIATYPE=REGULAR\n"
+                    "@PJL SET DENSITY = -6\n"
+                    "@PJL SET DEVBIASADJUST = -6\n"
+                    "@PJL SET ORIENTATION = PORTRAIT\n") != std::string::npos);
   },
 
   "Quotes and control characters are removed from PJL strings",
