@@ -47,11 +47,13 @@ settings saved with `lpoptions` carry over.
    [Releases](https://github.com/jmarler/hl2270dw-macos/releases) and open
    it. The package is signed and notarized by Apple.
 2. Open **System Settings > Printers & Scanners**, click **Add Printer,
-   Scanner, or Fax…**, and select the HL-2270DW in the list. To switch a
+   Scanner, or Fax…**, and click the HL-2270DW in the list. The list shows
+   printers, not drivers, so this driver doesn't appear there. To switch a
    printer you already have to this driver, remove it and add it again.
 3. Open the **Use** menu at the bottom of the window, choose
    **Brother HL-2270DW series, hl2270dw-macos** (followed by the version
-   number), and click **Add**.
+   number), and click **Add**. The menu is dimmed until you click a
+   printer in the list.
 
    ![The Use menu in Add Printer, with the hl2270dw-macos driver selected](docs/images/use-menu.png)
 
