@@ -11,6 +11,10 @@ It is based on [brlaser](https://github.com/Owl-Maintain/brlaser), the
 open-source CUPS driver for Brother lasers, and adds what the HL-2270DW
 needs to behave like it does with Brother's own driver.
 
+> **Supported printer:** the Brother HL-2270DW only. For other Brother
+> monochrome lasers, see [brlaser](https://github.com/Owl-Maintain/brlaser),
+> which supports many more models.
+
 > **Status:** 1.0.0. Tested on an HL-2270DW over the network, including
 > two-sided printing, manual feed, HQ 1200, toner save and supply levels.
 > Output has also been compared with Brother's driver page by page (see
@@ -42,10 +46,38 @@ settings saved with `lpoptions` carry over.
 1. Download `hl2270dw-macos-<version>.pkg` from
    [Releases](https://github.com/jmarler/hl2270dw-macos/releases) and open
    it. The package is signed and notarized by Apple.
-2. Open **System Settings > Printers & Scanners** and add the printer
-   (or remove and re-add an existing one).
-3. Under **Use**, choose **Select Software…** and pick
-   **Brother HL-2270DW series, hl2270dw-macos**.
+2. Open **System Settings > Printers & Scanners**, click **Add Printer,
+   Scanner, or Fax…**, and select the HL-2270DW in the list. To switch a
+   printer you already have to this driver, remove it and add it again.
+3. Open the **Use** menu at the bottom of the window, choose
+   **Brother HL-2270DW series, hl2270dw-macos** (followed by the version
+   number), and click **Add**.
+
+   ![The Use menu in Add Printer, with the hl2270dw-macos driver selected](docs/images/use-menu.png)
+
+   If Brother's driver is also installed, macOS usually picks it
+   (**Brother HL-2270DW series CUPS**), so check the **Use** menu before
+   clicking **Add**. You don't need to uninstall Brother's driver.
+
+   If this driver isn't in the menu, choose **Select Software…**, type
+   `2270` in the search field, and pick it from the list:
+
+   ![The Printer Software list filtered to 2270, showing both drivers](docs/images/printer-software.png)
+
+### Checking which driver a printer uses
+
+Click the printer in **Printers & Scanners**. **Kind** and **Driver
+version** show which driver it uses:
+
+![Printer details showing the hl2270dw-macos driver and version 1.0.0](docs/images/printer-details.png)
+
+| | This driver | Brother's driver |
+| --- | --- | --- |
+| Kind | Brother HL-2270DW series, hl2270dw-macos | Brother HL-2270DW series CUPS |
+| Driver version | 1.0.0 or later | Brother's version, such as 4.5.1 |
+
+In Terminal, `grep -H '^\*NickName' /etc/cups/ppd/*.ppd` lists the driver
+for every printer.
 
 To set up a second queue for testing, next to an existing one:
 
