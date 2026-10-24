@@ -16,7 +16,8 @@ needs to behave like it does with Brother's own driver.
 > which supports many more models.
 
 > **Status:** 1.1.0. Tested on an HL-2270DW over the network, including
-> two-sided printing, manual feed, HQ 1200, toner save and supply levels.
+> two-sided printing, manual feed, HQ 1200, toner save, density adjustment
+> and supply levels.
 > Output has also been compared with Brother's driver page by page (see
 > [Testing](#testing)).
 
@@ -110,6 +111,20 @@ macos/add-queue.sh            # uses the address of your current HL-2270DW queue
 
 Supply levels and printer status need a network connection (they are read
 over SNMP). Printing over USB works, but levels are not shown.
+
+### Upgrading
+
+Install the new package. Printers you already added keep the old
+version's options until you update them: remove the printer and add it
+again, or update it in place, keeping its name and settings:
+
+```sh
+sudo lpadmin -p QUEUE_NAME -m "Library/Printers/PPDs/Contents/Resources/Brother HL-2270DW series hl2270dw-macos.gz"
+```
+
+`lpstat -p` lists queue names. lpadmin also prints a warning that
+printer drivers are deprecated in CUPS. It appears for every driver
+that is not AirPrint and does not stop the update.
 
 ### Uninstalling
 
