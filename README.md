@@ -41,6 +41,27 @@ needs to behave like it does with Brother's own driver.
 The option names and values are the same as in Brother's driver, so
 settings saved with `lpoptions` carry over.
 
+### Compared with brlaser
+
+brlaser supports the HL-2270DW too, with a profile shared by many Brother
+models. Packages that build brlaser for Apple silicon use that same
+profile. For this printer, this driver adds:
+
+| | brlaser 6.2.8 | This driver |
+| --- | --- | --- |
+| Page placement | About 1.4 mm higher and 0.5 mm further right than Brother's driver | Same as Brother's driver |
+| Paper sizes | 11, no custom sizes | 20, plus custom sizes |
+| JIS B5 | Printed as ISO B5, so the bottom of the page is cut off ([fix submitted](https://github.com/Owl-Maintain/brlaser/pull/91)) | Correct |
+| Paper source | Lists Tray 2, Tray 3 and MP Tray, which this printer doesn't have | Auto select, tray 1, manual feed slot |
+| Media types | No recycled, label or postcard | Brother's list |
+| Brother options | Toner save only | Toner save, improvement settings, reduce ghosting, skip blank page, sleep time |
+| Supply levels and printer status | Not available | Toner, drum, paper out, jams, open cover |
+| Self-test page | No | Yes |
+| Macs | Depends on the package | Apple silicon and Intel, macOS 11 or later |
+
+brlaser has a **Toner Density** setting, which this driver doesn't. For
+any other Brother printer, use brlaser.
+
 ## Installing
 
 1. Download `hl2270dw-macos-<version>.pkg` from
