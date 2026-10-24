@@ -15,7 +15,7 @@ needs to behave like it does with Brother's own driver.
 > monochrome lasers, see [brlaser](https://github.com/Owl-Maintain/brlaser),
 > which supports many more models.
 
-> **Status:** 1.0.0. Tested on an HL-2270DW over the network, including
+> **Status:** 1.1.0. Tested on an HL-2270DW over the network, including
 > two-sided printing, manual feed, HQ 1200, toner save and supply levels.
 > Output has also been compared with Brother's driver page by page (see
 > [Testing](#testing)).

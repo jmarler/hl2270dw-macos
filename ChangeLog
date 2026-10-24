@@ -1,3 +1,9 @@
+hl2270dw-macos v1.1.0
+    New Density Adjustment option (printer default, or -6 to +6), with
+    the same option name, range and PJL commands as Brother's drivers
+    for other models. Brother's HL-2270DW driver does not offer it, but
+    the printer honors it.
+
 hl2270dw-macos v1.0.0
     Native macOS driver for the Brother HL-2270DW, based on brlaser v6.2.8:
         New filter rastertohl2270dw with the Brother driver's PJL job
